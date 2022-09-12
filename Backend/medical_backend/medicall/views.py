@@ -29,8 +29,9 @@ def user(request):
 def user1(request , pk):
     try:
         schat = User.objects.get(pk=pk)
+       
     except User.DoesNotExist:
-        res={'result':'username not found'}  
+        res={'result':'username nottt found'}  
         return JsonResponse(res)
 
     if request.method == 'GET':
@@ -57,9 +58,12 @@ def addUser(request):
     myName=data['name']
     myPhone=data['phone_no']
     myemail_id=data['email_id']
-    res={'result':'username already taken'}   
+    mydp=data['dp']
+    mypassword=data['password']
+    Myseller=data['seller']
+    res={'result':'Email already taken'}   
     try:
-        z = User.objects.get(name=myName)
+        z = User.objects.get(email_id=myemail_id)
         return JsonResponse(res) 
     except User.DoesNotExist:
         try:
@@ -68,11 +72,14 @@ def addUser(request):
             return JsonResponse(res) 
         except:
             dy={
-                "id":myName,
+                "id":myPhone,
                 "name":myName,
                 "phone_no":myPhone,
                 "email_id":myemail_id,
-            }
+                "dp":mydp,
+                "password":mypassword,
+                "seller":Myseller,
+               }
             srlz=UserSerializer(data=dy)
             if srlz.is_valid():
                 srlz.save()
@@ -83,23 +90,23 @@ def addUser(request):
 @csrf_exempt
 def auth(request ):
     data = JSONParser().parse(request)
-    name=data['name']
+    passWord=data['password']
     phoneNo=data['phone_no']
     res={'result':'user already exists'}
     try:
-        schat = User.objects.get(pk=name)
+        schat = User.objects.get(pk=passWord)
         serializer = UserSerializer(schat)
         d=(dict(serializer.data))
         if d['phone_no']==phoneNo:
             res['result']='old bakra'
             return JsonResponse(res)
         else:
-            res['result']='username and phone number donot match'
+            res['result']=' phone number and password donot match'
             return JsonResponse(res)
     except User.DoesNotExist:
         try:
             schat = User.objects.get(phone_no=phoneNo)
-            res['result']='please check your username'
+            res['result']='please check your password'
             return JsonResponse(res)
 
         except User.DoesNotExist:
