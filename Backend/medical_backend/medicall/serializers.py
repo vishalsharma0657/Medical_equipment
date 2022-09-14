@@ -24,3 +24,4 @@ class UserSerializer(serializers.Serializer):
         instance.seller=validated_data.get('seller',instance.seller)
         instance.save()
         return instance
+        
