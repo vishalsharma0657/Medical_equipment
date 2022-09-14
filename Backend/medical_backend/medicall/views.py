@@ -8,6 +8,7 @@ from rest_framework.parsers import JSONParser
 from medicall.models import User
 from medicall.models import Product
 from medicall.serializers import UserSerializer
+from medicall.serializers import ProductSerializer
 
 # Create your views here.
 
@@ -120,8 +121,8 @@ def auth(request ):
 @csrf_exempt
 def user(request):
     if request.method == 'GET':
-        schat = User.objects.all()
-        serializer = UserSerializer(schat, many=True)
+        schat = Product.objects.all()
+        serializer = ProductSerializer(schat, many=True)
         return JsonResponse(serializer.data, safe=False)
 
     elif request.method == 'POST':
